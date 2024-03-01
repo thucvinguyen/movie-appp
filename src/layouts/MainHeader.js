@@ -13,25 +13,42 @@ import PersonIcon from "@mui/icons-material/Person";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Logo from "../components/Logo";
 import useAuth from "../hooks/useAuth";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SearchBar from "./SearchBar";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
+
+const navLinkStyles = {
+  textDecoration: "none",
+  color: "inherit",
+  transition: "color 0.3s",
+  "&:hover": {
+    color: "lightblue",
+  },
+};
 
 function MainHeader() {
   const auth = useAuth();
-  let navigate = useNavigate();
-
+  const navigate = useNavigate();
   const { user } = useAuth();
-  const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+  const [genresAnchorEl, setGenresAnchorEl] = React.useState(null);
+  const [avatarAnchorEl, setAvatarAnchorEl] = React.useState(null);
+
+  const handleGenresOpen = (event) => {
+    setGenresAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
+  const handleGenresClose = () => {
+    setGenresAnchorEl(null);
+  };
+
+  const handleAvatarOpen = (event) => {
+    setAvatarAnchorEl(event.currentTarget);
+  };
+
+  const handleAvatarClose = () => {
+    setAvatarAnchorEl(null);
   };
 
   return (
@@ -47,37 +64,66 @@ function MainHeader() {
             <Logo />
           </IconButton>
           <Typography variant="h8" color="inherit" component="div">
-            Home
+            <NavLink to="/" style={navLinkStyles}>
+              Home
+            </NavLink>
+          </Typography>
+          <Box sx={{ width: 20 }} />
+          {/* <Typography variant="h8" color="inherit" component="div">
+            <NavLink
+              to="/genres"
+              style={navLinkStyles}
+              onClick={handleGenresOpen}
+            >
+              Genres
+            </NavLink>
+            <Menu
+              anchorEl={genresAnchorEl}
+              open={Boolean(genresAnchorEl)}
+              onClose={handleGenresClose}
+              style={{ cursor: "pointer" }}
+            >
+              <MenuItem onClick={handleGenresClose}>Genre1</MenuItem>
+              <MenuItem onClick={handleGenresClose}>Genre2</MenuItem>
+            </Menu>
+          </Typography> */}
+          <Typography
+            variant="h8"
+            color="inherit"
+            component="div"
+            onMouseEnter={handleGenresOpen}
+            onMouseLeave={handleGenresClose}
+            style={{ cursor: "pointer" }}
+          >
+            Genres
+            <Menu
+              anchorEl={genresAnchorEl}
+              open={Boolean(genresAnchorEl)}
+              onClose={handleGenresClose}
+              style={{ cursor: "pointer" }}
+            >
+              <MenuItem onClick={handleGenresClose}>Genre Menu</MenuItem>
+            </Menu>
           </Typography>
           <Box sx={{ width: 20 }} />
           <Typography variant="h8" color="inherit" component="div">
-            TV Shows
-          </Typography>
-          <Box sx={{ width: 20 }} />
-          <Typography variant="h8" color="inherit" component="div">
-            Movies
-          </Typography>
-          <Box sx={{ width: 20 }} />
-          <Typography variant="h8" color="inherit" component="div">
-            New & Popular
-          </Typography>
-          <Box sx={{ width: 20 }} />
-          <Typography variant="h8" color="inherit" component="div">
-            My List
+            <NavLink to="/mylist" style={navLinkStyles}>
+              My List
+            </NavLink>
           </Typography>
           <Box sx={{ flexGrow: 8 }} />
           <SearchBar />
           <Box sx={{ flexGrow: 1 }} />
           <NotificationsIcon sx={{ mr: 2 }} />
           <div
-            onMouseEnter={handleMenuOpen}
-            onMouseLeave={handleMenuClose}
+            onMouseEnter={handleAvatarOpen}
+            onMouseLeave={handleAvatarClose}
             style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
           >
             <IconButton
               color="inherit"
               aria-label="settings"
-              onMouseLeave={handleMenuClose}
+              onMouseLeave={handleAvatarClose}
               style={{ cursor: "pointer" }}
             >
               <Avatar
@@ -89,37 +135,35 @@ function MainHeader() {
               >
                 {user?.username[0]}
               </Avatar>
-              <ExpandMoreIcon />
-            </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-              onMouseLeave={handleMenuClose}
-              style={{ cursor: "pointer" }}
-            >
-              <MenuItem onClick={handleMenuClose}>
-                <PersonIcon sx={{ mr: 1 }} />
-                Profile Account
-              </MenuItem>
-              <MenuItem onClick={handleMenuClose}>
-                <SettingsIcon sx={{ mr: 1 }} />
-                Settings
-              </MenuItem>
-              <MenuItem onClick={handleMenuClose}>
-                <HelpOutlineIcon sx={{ mr: 1 }} />
-                Help Center
-              </MenuItem>
-              <Divider />
-              <MenuItem
-                onClick={() => {
-                  auth.logout(() => navigate("/"));
-                }}
-                sx={{ display: "flex", justifyContent: "center" }}
+              <Menu
+                anchorEl={avatarAnchorEl}
+                open={Boolean(avatarAnchorEl)}
+                onClose={handleAvatarClose}
+                style={{ cursor: "pointer" }}
               >
-                Log Out
-              </MenuItem>
-            </Menu>
+                <MenuItem onClick={handleAvatarClose}>
+                  <PersonIcon sx={{ mr: 1 }} />
+                  Profile Account
+                </MenuItem>
+                <MenuItem onClick={handleAvatarClose}>
+                  <SettingsIcon sx={{ mr: 1 }} />
+                  Settings
+                </MenuItem>
+                <MenuItem onClick={handleAvatarClose}>
+                  <HelpOutlineIcon sx={{ mr: 1 }} />
+                  Help Center
+                </MenuItem>
+                <Divider />
+                <MenuItem
+                  onClick={() => {
+                    auth.logout(() => navigate("/"));
+                  }}
+                  sx={{ display: "flex", justifyContent: "center" }}
+                >
+                  Log Out
+                </MenuItem>
+              </Menu>
+            </IconButton>
           </div>
         </Toolbar>
       </AppBar>

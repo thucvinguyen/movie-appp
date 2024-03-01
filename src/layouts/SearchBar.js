@@ -1,8 +1,9 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import { useNavigate } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -45,18 +46,36 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function SearchBar() {
+const SearchBar = () => {
+  const [movieName, setMovieName] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearchInputChange = (event) => {
+    setMovieName(event.target.value);
+  };
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    navigate(`/search/${encodeURIComponent(movieName)}`);
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Search>
-        <SearchIconWrapper>
-          <SearchIcon />
-        </SearchIconWrapper>
-        <StyledInputBase
-          placeholder="Search…"
-          inputProps={{ "aria-label": "search" }}
-        />
-      </Search>
+      <form onSubmit={handleSearch}>
+        <Search>
+          <SearchIconWrapper>
+            <SearchIcon />
+          </SearchIconWrapper>
+          <StyledInputBase
+            placeholder="Search…"
+            inputProps={{ "aria-label": "search" }}
+            value={movieName}
+            onChange={handleSearchInputChange}
+          />
+        </Search>
+      </form>
     </Box>
   );
-}
+};
+
+export default SearchBar;

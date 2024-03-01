@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import React from "react";
 import { FTextField } from "../components/form";
-import { FormProvider } from "react-hook-form";
 
 function SignUpModal() {
   const [open, setOpen] = React.useState(false);

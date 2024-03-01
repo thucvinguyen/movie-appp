@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import apiService from "../api/apiService";
 import { API_KEY } from "../api/config";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
 import MovieDetails from "../components/MovieDetails";
+import { Box, CircularProgress } from "@mui/material";
 
 function DetailPage() {
   let { movieId } = useParams();
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
   const [movieDetail, setMovieDetail] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -18,16 +18,33 @@ function DetailPage() {
         const res = await apiService.get(
           `movie/${movieId}?api_key=${API_KEY}&language=en-US&append_to_response=videos`
         );
-        console.log(res.data);
         setMovieDetail(res.data);
+      } catch (error) {
+        console.log(error.message);
+      } finally {
         setLoading(false);
-      } catch (e) {
-        console.log(e.message);
       }
     };
     fetchData();
   }, [movieId]);
 
+  // Check if movieDetail is null before rendering MovieDetails
+  if (!movieDetail) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          flexDirection: "column",
+        }}
+      >
+        <CircularProgress />
+        <Typography variant="h5">Loading movie details...</Typography>
+      </Box>
+    );
+  }
   return (
     <>
       <MovieDetails movieDetail={movieDetail} />

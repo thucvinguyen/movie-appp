@@ -8,28 +8,35 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import RecommendIcon from "@mui/icons-material/Recommend";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function MovieCard({ movie }) {
   const navigate = useNavigate();
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const handleClick = () => {
     navigate(`/movie/${movie.id}`);
   };
 
+  const handleFavoriteClick = (e) => {
+    e.stopPropagation();
+    setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+  };
+
   return (
     <Card
       className="card"
-      onClick={handleClick}
       sx={{
         width: 300,
-        height: 300,
+        height: 500,
         borderRadius: "6px",
         mt: 4,
         cursor: "pointer",
       }}
     >
-      <CardActionArea>
+      <CardActionArea onClick={handleClick}>
         <Box
           display="flex"
           flexDirection="column"
@@ -39,59 +46,43 @@ export default function MovieCard({ movie }) {
               backgroundImage: `url(https://image.tmdb.org/t/p/original/${movie.poster_path})`,
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
-              height: "300px",
+              height: "500px",
             },
           ]}
         >
-          <Paper className="content">
+          <Paper className="content" onClick={(e) => e.stopPropagation()}>
             <CardContent>
               <Box
                 display="flex"
-                flexDirection="column"
+                flexDirection="row"
                 justifyContent="space-between"
-                sx={[
-                  {
-                    maxHeight: "30%",
-                    overflow: "hidden",
-                  },
-                ]}
+                alignItems="center"
+                sx={{
+                  maxHeight: "30%",
+                  overflow: "hidden",
+                }}
               >
-                <Typography
-                  gutterBottom
-                  variant="body3"
-                  component="div"
-                  display="flex"
-                  justifyContent="center"
-                >
-                  {`${movie.original_title}`}
-                </Typography>
-
-                <Stack flexDirection="row" justifyContent="flex-end" mt={1}>
-                  <Box
-                    display="flex"
-                    flexDirection="row"
-                    justifyContent="center"
-                    mr={3}
-                  >
-                    <RecommendIcon
-                      className="recommend_icon"
-                      fontSize="small"
-                    />
-                    <Typography variant="subtitle2" ml={1}>
-                      {`${movie.vote_average}`}
-                    </Typography>
-                  </Box>
-                  <Box
-                    display="flex"
-                    flexDirection="row"
-                    justifyContent="center"
-                  >
-                    <FavoriteIcon className="favorite_icon" fontSize="small" />
-                    <Typography variant="subtitle2" ml={1}>
-                      {`${movie.vote_count}`}
-                    </Typography>
-                  </Box>
-                </Stack>
+                <Box display="flex" flexDirection="column">
+                  <Typography gutterBottom variant="h6" component="div">
+                    {`${movie.original_title}`}
+                  </Typography>
+                  <Typography variant="subtitle2">
+                    {`${movie.release_date}`}
+                  </Typography>
+                </Box>
+                {isFavorite ? (
+                  <FavoriteIcon
+                    className="recommend_icon"
+                    fontSize="large"
+                    onClick={handleFavoriteClick}
+                  />
+                ) : (
+                  <FavoriteBorderIcon
+                    className="recommend_icon"
+                    fontSize="large"
+                    onClick={handleFavoriteClick}
+                  />
+                )}
               </Box>
             </CardContent>
           </Paper>
