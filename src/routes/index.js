@@ -7,7 +7,6 @@ import LoginPage from "../pages/LoginPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import AuthRequire from "./AuthRequire";
 import DetailPage from "../pages/DetailPage";
-import SearchBar from "../layouts/SearchBar";
 
 function Router() {
   return (

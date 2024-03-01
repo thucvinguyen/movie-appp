@@ -56,7 +56,8 @@ const SearchBar = () => {
 
   const handleSearch = (event) => {
     event.preventDefault();
-    navigate(`/search/${encodeURIComponent(movieName)}`);
+    navigate(`/search/movie?query=${encodeURIComponent(movieName)}`);
+    setMovieName("");
   };
 
   return (
