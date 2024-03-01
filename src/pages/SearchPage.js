@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import apiService from "../api/apiService";
 import { API_KEY } from "../api/config";
-import SearchBar from "../layouts/SearchBar";
+import MovieList from "../components/MovieList";
 
-const HomePage = () => {
+const SearchPage = () => {
   const [searchQuery, setSearchQuery] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -33,11 +33,13 @@ const HomePage = () => {
     <>
       {loading ? (
         <div>Loading...</div>
+      ) : searchQuery.length ? (
+        <MovieList movies={searchQuery} />
       ) : (
-        <SearchBar searchQuery={searchQuery} />
+        <div>No movies found</div>
       )}
     </>
   );
 };
 
-export default HomePage;
+export default SearchPage;

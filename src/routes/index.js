@@ -7,6 +7,7 @@ import LoginPage from "../pages/LoginPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import AuthRequire from "./AuthRequire";
 import DetailPage from "../pages/DetailPage";
+import SearchPage from "../pages/SearchPage";
 
 function Router() {
   return (
@@ -23,7 +24,7 @@ function Router() {
         <Route path="/movie/:movieId" element={<DetailPage />} />
         <Route path="/genres" />
         <Route path="/mylist" />
-        <Route path="/search/movie" />
+        <Route path="/search/movie" element={<SearchPage />} />
       </Route>
 
       <Route element={<BlankLayout />}>
