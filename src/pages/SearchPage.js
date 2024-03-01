@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import apiService from "../api/apiService";
 import { API_KEY } from "../api/config";
-import MovieList from "../components/MovieList";
 import SearchBar from "../layouts/SearchBar";
 
 const HomePage = () => {
@@ -32,8 +31,11 @@ const HomePage = () => {
 
   return (
     <>
-      <SearchBar />
-      {loading ? <div>Loading...</div> : <MovieList movies={searchQuery} />}
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <SearchBar searchQuery={searchQuery} />
+      )}
     </>
   );
 };
