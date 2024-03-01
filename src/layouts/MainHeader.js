@@ -17,6 +17,7 @@ import SearchBar from "./SearchBar";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
+import MovieGenres from "../components/MovieGenres";
 
 const navLinkStyles = {
   textDecoration: "none",
@@ -27,10 +28,13 @@ const navLinkStyles = {
   },
 };
 
-function MainHeader() {
+function MainHeader({ movieGenres }) {
   const auth = useAuth();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const handleClick = () => {
+    navigate(`genre/movie`);
+  };
 
   const [genresAnchorEl, setGenresAnchorEl] = React.useState(null);
   const [avatarAnchorEl, setAvatarAnchorEl] = React.useState(null);
@@ -96,15 +100,23 @@ function MainHeader() {
             style={{ cursor: "pointer" }}
           >
             Genres
-            <Menu
-              anchorEl={genresAnchorEl}
-              open={Boolean(genresAnchorEl)}
-              onClose={handleGenresClose}
-              style={{ cursor: "pointer" }}
-            >
-              <MenuItem onClick={handleGenresClose}>Genre Menu</MenuItem>
-            </Menu>
           </Typography>
+          <Menu
+            anchorEl={genresAnchorEl}
+            open={Boolean(genresAnchorEl)}
+            onClose={handleGenresClose}
+            style={{ cursor: "pointer" }}
+          >
+            <MenuItem onClose={handleGenresClose} onClick={handleClick}>
+              {/* {movieGenres.genres.map((genre) => (
+                <MenuItem key={genre.id} onClick={handleGenresClose}>
+                  {genre.name}
+                </MenuItem>
+              ))} */}
+              List of genres rendered here
+            </MenuItem>
+          </Menu>
+
           <Box sx={{ width: 20 }} />
           <Typography variant="h8" color="inherit" component="div">
             <NavLink to="/mylist" style={navLinkStyles}>

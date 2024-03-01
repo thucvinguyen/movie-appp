@@ -8,6 +8,7 @@ import NotFoundPage from "../pages/NotFoundPage";
 import AuthRequire from "./AuthRequire";
 import DetailPage from "../pages/DetailPage";
 import SearchPage from "../pages/SearchPage";
+import GenresPage from "../pages/GenresPage";
 
 function Router() {
   return (
@@ -22,7 +23,7 @@ function Router() {
       >
         <Route index element={<HomePage />} />
         <Route path="/movie/:movieId" element={<DetailPage />} />
-        <Route path="/genres" />
+        <Route path="genre/movie" element={<GenresPage />} />
         <Route path="/mylist" />
         <Route path="/search/movie" element={<SearchPage />} />
       </Route>
