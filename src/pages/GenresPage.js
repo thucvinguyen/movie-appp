@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import apiService from "../api/apiService";
 import { API_KEY } from "../api/config";
 import MovieList from "../components/MovieList";
-import { Container, CircularProgress } from "@mui/material";
+import { Container, CircularProgress, Box, Typography } from "@mui/material";
 
 function GenresPage() {
   const { genreId } = useParams();
@@ -55,14 +55,27 @@ function GenresPage() {
   return (
     <Container maxWidth="auto">
       {loading ? (
-        <CircularProgress />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
       ) : (
         <>
-          <h1>{genreName}</h1>
+          <Typography
+            sx={{ display: "flex", justifyContent: "center", mt: 2 }}
+            variant="h3"
+          >
+            {genreName}
+          </Typography>
+
           <div>
-            {movieGenres.map((movie) => (
-              <MovieList key={movie.id} movies={movieGenres} />
-            ))}
+            <MovieList movies={movieGenres} />
           </div>
         </>
       )}
