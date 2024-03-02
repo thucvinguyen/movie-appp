@@ -1,54 +1,72 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import apiService from "../api/apiService";
 import { API_KEY } from "../api/config";
-import Typography from "@mui/material/Typography";
-import { useParams } from "react-router-dom";
-import { Box, CircularProgress } from "@mui/material";
-import MovieGenres from "../components/MovieGenres";
+import MovieList from "../components/MovieList";
+import { Container, CircularProgress } from "@mui/material";
 
 function GenresPage() {
+  const { genreId } = useParams();
+  const [genreName, setGenreName] = useState("");
   const [movieGenres, setMovieGenres] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
         const res = await apiService.get(
           `genre/movie/list?api_key=${API_KEY}&language=en`
         );
-        setMovieGenres(res.data.genres);
-        setError("");
+        const genres = res.data.genres;
+        const selectedGenre = genres.find(
+          (genre) => genre.id === parseInt(genreId)
+        );
+        if (selectedGenre) {
+          setGenreName(selectedGenre.name);
+        }
       } catch (error) {
-        console.log(error.message);
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [genreId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const res = await apiService.get(
+          `discover/movie?api_key=${API_KEY}&with_genres=${genreId}`
+        );
+        setMovieGenres(res.data.results);
+      } catch (error) {
+        console.log(error);
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, []);
+  }, [genreId]);
 
-  if (!movieGenres) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          flexDirection: "column",
-        }}
-      >
-        <CircularProgress />
-        <Typography variant="h5">Loading movie genres...</Typography>
-      </Box>
-    );
-  }
   return (
-    <>
-      <MovieGenres movieGenres={movieGenres} />
-    </>
+    <Container maxWidth="auto">
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <h1>{genreName}</h1>
+          <div>
+            {movieGenres.map((movie) => (
+              <MovieList key={movie.id} movies={movieGenres} />
+            ))}
+          </div>
+        </>
+      )}
+    </Container>
   );
 }
 

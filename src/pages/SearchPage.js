@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import apiService from "../api/apiService";
 import { API_KEY } from "../api/config";
 import MovieList from "../components/MovieList";
+import { Box, CircularProgress, Container } from "@mui/material";
 
 const SearchPage = () => {
   const [searchQuery, setSearchQuery] = useState([]);
@@ -32,15 +33,26 @@ const SearchPage = () => {
   }, [valueQuery]);
 
   return (
-    <>
+    <Container maxWidth="auto">
       {loading ? (
-        <div>Loading...</div>
+        <div>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        </div>
       ) : searchQuery.length ? (
         <MovieList movies={searchQuery} />
       ) : (
         <div>No movies found</div>
       )}
-    </>
+    </Container>
   );
 };
 

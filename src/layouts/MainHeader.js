@@ -15,9 +15,12 @@ import Logo from "../components/Logo";
 import useAuth from "../hooks/useAuth";
 import SearchBar from "./SearchBar";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
-import MovieGenres from "../components/MovieGenres";
+import { useState } from "react";
+import { useEffect } from "react";
+import apiService from "../api/apiService";
+import { API_KEY } from "../api/config";
 
 const navLinkStyles = {
   textDecoration: "none",
@@ -28,7 +31,23 @@ const navLinkStyles = {
   },
 };
 
-function MainHeader({ movieGenres }) {
+function MainHeader() {
+  const [movieGenres, setMovieGenres] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await apiService.get(
+          `genre/movie/list?api_key=${API_KEY}&language=en`
+        );
+        setMovieGenres(res.data.genres);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchData();
+  }, []);
+
   const auth = useAuth();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -55,6 +74,8 @@ function MainHeader({ movieGenres }) {
     setAvatarAnchorEl(null);
   };
 
+  console.log(movieGenres);
+
   return (
     <Box>
       <AppBar position="static">
@@ -73,49 +94,34 @@ function MainHeader({ movieGenres }) {
             </NavLink>
           </Typography>
           <Box sx={{ width: 20 }} />
-          {/* <Typography variant="h8" color="inherit" component="div">
-            <NavLink
-              to="/genres"
-              style={navLinkStyles}
-              onClick={handleGenresOpen}
+          <Box onMouseEnter={handleGenresOpen} onMouseLeave={handleGenresClose}>
+            <Typography
+              variant="h8"
+              color="inherit"
+              component="div"
+              // onClick={handleGenresOpen}
+              style={{ cursor: "pointer" }}
             >
               Genres
-            </NavLink>
+            </Typography>
             <Menu
               anchorEl={genresAnchorEl}
               open={Boolean(genresAnchorEl)}
               onClose={handleGenresClose}
-              style={{ cursor: "pointer" }}
+              sx={{ cursor: "pointer", mt: 2 }}
             >
-              <MenuItem onClick={handleGenresClose}>Genre1</MenuItem>
-              <MenuItem onClick={handleGenresClose}>Genre2</MenuItem>
-            </Menu>
-          </Typography> */}
-          <Typography
-            variant="h8"
-            color="inherit"
-            component="div"
-            onMouseEnter={handleGenresOpen}
-            onMouseLeave={handleGenresClose}
-            style={{ cursor: "pointer" }}
-          >
-            Genres
-          </Typography>
-          <Menu
-            anchorEl={genresAnchorEl}
-            open={Boolean(genresAnchorEl)}
-            onClose={handleGenresClose}
-            style={{ cursor: "pointer" }}
-          >
-            <MenuItem onClose={handleGenresClose} onClick={handleClick}>
-              {/* {movieGenres.genres.map((genre) => (
+              {movieGenres.map((genre) => (
                 <MenuItem key={genre.id} onClick={handleGenresClose}>
-                  {genre.name}
+                  <Link
+                    to={`genre/${genre.id}`}
+                    style={{ color: "black", textDecoration: "none" }}
+                  >
+                    {genre.name}{" "}
+                  </Link>
                 </MenuItem>
-              ))} */}
-              List of genres rendered here
-            </MenuItem>
-          </Menu>
+              ))}
+            </Menu>
+          </Box>
 
           <Box sx={{ width: 20 }} />
           <Typography variant="h8" color="inherit" component="div">
