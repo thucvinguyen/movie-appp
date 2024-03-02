@@ -51,9 +51,9 @@ function MainHeader() {
   const auth = useAuth();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const handleClick = () => {
-    navigate(`genre/movie`);
-  };
+  // const handleClick = () => {
+  //   navigate(`genre/movie`);
+  // };
 
   const [genresAnchorEl, setGenresAnchorEl] = React.useState(null);
   const [avatarAnchorEl, setAvatarAnchorEl] = React.useState(null);

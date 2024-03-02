@@ -8,24 +8,24 @@ import { Container } from "@mui/material";
 
 function HomePage() {
   const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState("");
 
   const auth = useAuth();
   let navigate = useNavigate();
 
   useEffect(() => {
     const getMovies = async () => {
-      setLoading(true);
+      // setLoading(true);
       try {
         const res = await apiService.get(`/movie/popular?api_key=${API_KEY}`);
         setMovies(res.data.results);
-        setError("");
+        // setError("");
       } catch (error) {
         console.log(error);
-        setError(error.message);
+        // setError(error.message);
       }
-      setLoading(false);
+      // setLoading(false);
     };
     getMovies();
   }, []);

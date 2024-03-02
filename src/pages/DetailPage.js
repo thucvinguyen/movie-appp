@@ -8,13 +8,13 @@ import { Box, CircularProgress } from "@mui/material";
 
 function DetailPage() {
   let { movieId } = useParams();
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [movieDetail, setMovieDetail] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
+        // setLoading(true);
         const res = await apiService.get(
           `movie/${movieId}?api_key=${API_KEY}&language=en-US&append_to_response=videos`
         );
@@ -22,7 +22,7 @@ function DetailPage() {
       } catch (error) {
         console.log(error.message);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
     fetchData();

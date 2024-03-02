@@ -8,10 +8,8 @@ import { Box, CircularProgress, Container } from "@mui/material";
 const SearchPage = () => {
   const [searchQuery, setSearchQuery] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const valueQuery = searchParams.get("query");
-  console.log(valueQuery);
 
   useEffect(() => {
     if (!valueQuery) return;
@@ -22,10 +20,8 @@ const SearchPage = () => {
           `search/movie?query=${valueQuery}&api_key=${API_KEY}`
         );
         setSearchQuery(res.data.results);
-        setError("");
       } catch (error) {
         console.log(error);
-        setError(error.message);
       }
       setLoading(false);
     };

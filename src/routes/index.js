@@ -5,7 +5,7 @@ import MainLayout from "../layouts/MainLayout";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import NotFoundPage from "../pages/NotFoundPage";
-import AuthRequire from "./AuthRequire";
+// import AuthRequire from "./AuthRequire";
 import DetailPage from "../pages/DetailPage";
 import SearchPage from "../pages/SearchPage";
 import GenresPage from "../pages/GenresPage";
